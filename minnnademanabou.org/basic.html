@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="t_title">基础学习与核心能力</title>
+
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --btn:#111827;
+      --btnText:#ffffff;
+      --shadow:0 10px 30px rgba(0,0,0,.06);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans SC", Arial, sans-serif;
+      color:var(--text);
+      background: radial-gradient(1200px 600px at 20% -10%, #eef2ff 0%, rgba(238,242,255,0) 60%),
+                  radial-gradient(900px 500px at 90% 10%, #ecfeff 0%, rgba(236,254,255,0) 55%),
+                  var(--bg);
+      min-height:100vh;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter: blur(10px);
+      background: rgba(246,247,251,.72);
+      border-bottom:1px solid rgba(229,231,235,.8);
+    }
+    .topbar-inner{
+      max-width:1100px;
+      margin:0 auto;
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .back-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(255,255,255,.9);
+      color:var(--text);
+      text-decoration:none;
+      font-weight:600;
+      box-shadow: 0 6px 18px rgba(0,0,0,.05);
+    }
+    .back-btn:hover{transform: translateY(-1px)}
+    .back-icon{
+      width:18px;height:18px;display:inline-block;
+    }
+
+    main{
+      max-width:1100px;
+      margin:0 auto;
+      padding:22px 16px 64px;
+    }
+
+    header.hero{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+      align-items:stretch;
+      margin-top:6px;
+    }
+    @media (max-width: 860px){
+      header.hero{grid-template-columns: 1fr;}
+    }
+
+    .hero-card{
+      background:rgba(255,255,255,.75);
+      border:1px solid rgba(229,231,235,.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:22px;
+    }
+    h1{
+      margin:0 0 8px;
+      font-size: clamp(22px, 3vw, 34px);
+      letter-spacing:.2px;
+    }
+    .subtitle{
+      margin:0 0 14px;
+      color:var(--muted);
+      line-height:1.7;
+      font-size: 15px;
+    }
+    .tagrow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .tag{
+      border:1px solid rgba(229,231,235,.9);
+      background:rgba(255,255,255,.8);
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:13px;
+      color:#374151;
+    }
+
+    .quickstart{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .qs-item{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      padding:14px 14px;
+      box-shadow: 0 10px 26px rgba(0,0,0,.05);
+    }
+    .qs-title{
+      font-weight:700;
+      margin:0 0 6px;
+      font-size:14px;
+    }
+    .qs-desc{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+    }
+
+    .grid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:14px;
+    }
+    @media (max-width: 860px){
+      .grid{grid-template-columns: 1fr;}
+    }
+    .card{
+      background:rgba(255,255,255,.82);
+      border:1px solid rgba(229,231,235,.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height: 260px;
+    }
+    .card-header{
+      padding:16px 16px 12px;
+      border-bottom:1px solid rgba(229,231,235,.8);
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+    }
+    .card-title{
+      margin:0;
+      font-size:16px;
+      font-weight:800;
+    }
+    .card-badge{
+      font-size:12px;
+      color:#374151;
+      border:1px solid rgba(229,231,235,.9);
+      background:rgba(255,255,255,.9);
+      padding:6px 8px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+    .card-body{
+      padding:14px 16px 16px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+      flex:1;
+    }
+    .desc{
+      margin:0;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:14px;
+    }
+
+    .img-slot{
+      width:100%;
+      height:160px;
+      border-radius:14px;
+      border:1px dashed rgba(107,114,128,.45);
+      background: linear-gradient(135deg, rgba(17,24,39,.04), rgba(17,24,39,.02));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:rgba(107,114,128,.95);
+      font-size:13px;
+      padding:12px;
+      text-align:center;
+      overflow: hidden; 
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:4px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(17,24,39,.12);
+      background: #fff;
+      color:var(--text);
+      text-decoration:none;
+      font-weight:700;
+      font-size:13px;
+    }
+    .btn.primary{
+      background: var(--btn);
+      color: var(--btnText);
+      border-color: rgba(17,24,39,.2);
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .note{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.8;
+      background: rgba(255,255,255,.7);
+      border:1px solid rgba(229,231,235,.9);
+      border-radius: var(--radius);
+      padding:14px 16px;
+      box-shadow: var(--shadow);
+    }
+    footer{
+      margin-top:18px;
+      color:rgba(107,114,128,.9);
+      font-size:12px;
+      text-align:center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="back-btn" href="index.html" aria-label="返回主页">
+        <svg class="back-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span data-i18n="back_to_home">返回主页</span>
+      </a>
+    </div>
+  </div>
+
+  <main>
+    <header class="hero">
+      <section class="hero-card">
+        <h1 data-i18n="t_title">基础学习与核心能力</h1>
+        <p class="subtitle" data-i18n="t_subtitle">
+          这里的内容是为了帮你慢慢回到“能学习”的状态。<br>
+          不需要在意学段，也不为了考试。<br>
+          都是一些可以马上用得上的小方法和基础能力。<br>
+          你可以从任何一个模块开始，按自己的节奏来就好。
+        </p>
+        <div class="tagrow">
+          <span class="tag" data-i18n="low_threshold">低门槛</span>
+          <span class="tag" data-i18n="interruptable">可中断</span>
+          <span class="tag" data-i18n="repeatable">可重复</span>
+          <span class="tag" data-i18n="resource_navigation">资源导航</span>
+        </div>
+      </section>
+
+      <aside class="quickstart">
+        <div class="qs-item">
+          <p class="qs-title" data-i18n="usage">使用方式</p>
+          <p class="qs-desc" data-i18n="usage_desc">每个模块建议 5到15 分钟。可以按需所选，自己决定下一步。</p>
+        </div>
+        <div class="qs-item">
+          <p class="qs-title" data-i18n="cannot_select">无法选中</p>
+          <p class="qs-desc" data-i18n="cannot_select_desc">如果学不下去了，这是正常反应，而不是你的失败，可以随时暂停与返回，调整心态。</p>
+        </div>
+        <div class="qs-item">
+          <p class="qs-title" data-i18n="external_resources">外部资源</p>
+          <p class="qs-desc" data-i18n="external_resources_desc">按钮会跳转到外部学习网站，仅供参考。</p>
+        </div>
+      </aside>
+    </header>
+
+    <section class="grid" aria-label="内容模块">
+      <article class="card">
+        <div class="card-header">
+          <h2 class="card-title" data-i18n="basic_read_write">基础读写算</h2>
+          <span class="card-badge" data-i18n="suggested_start">建议先从这里开始</span>
+        </div>
+        <div class="card-body">
+          <div class="img-slot">
+            <img src="images/img/b1.jpg" alt="img-slot">
+          </div>
+          <p class="desc" data-i18n="basic_read_write_desc">
+            我们的目标不是“学一套学科课程”，而是获得日常与学习中最常用的能力，会读，会写，会算，BBC Bitesize 的讲解非常生活化，对基础薄弱的人很友好。
+          </p>
+          <div class="actions">
+            <a class="btn primary" href="https://www.bbc.co.uk/bitesize/learn" target="_blank" rel="noopener noreferrer" data-i18n="reference_website">
+              参考学习网站
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!--信息理解能力-->
+      <article class="card">
+        <div class="card-header">
+          <h2 class="card-title" data-i18n="info_comprehension">信息理解能力</h2>
+          <span class="card-badge" data-i18n="avoid_info_harm">避免信息伤害</span>
+        </div>
+        <div class="card-body">
+          <div class="img-slot">
+            <img src="images/img/b2.jpg" alt="img-slot">
+          </div>
+          <p class="desc" data-i18n="info_comprehension_desc">
+            MediaSmarts可以帮助你更清楚地理解信息，学习如何阅读公告、识别关键点、区分事实与观点、避免被误导，提升独立思考的能力。
+          </p>
+          <div class="actions">
+            <a class="btn primary" href="https://mediasmarts.ca/" target="_blank" rel="noopener noreferrer" data-i18n="reference_resource">
+              参考外部资源
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!--学习方法与节律-->
+      <article class="card">
+        <div class="card-header">
+          <h2 class="card-title" data-i18n="study_method_rhythm">学习方法与节律</h2>
+          <span class="card-badge" data-i18n="rebuild_rhythm">重建“能学”的节奏</span>
+        </div>
+        <div class="card-body">
+          <div class="img-slot">
+            <img src="images/img/b3.jpg" alt="img-slot">
+          </div>
+          <p class="desc" data-i18n="study_method_rhythm_desc">
+            当你很久没学习、或一学习就焦虑时，trello帮助你从“更小的步子”开始，5到10 分钟也算学习，帮助你指定长久的学习计划。
+          </p>
+          <div class="actions">
+            <a class="btn primary" href="https://trello.com/home" target="_blank" rel="noopener noreferrer" data-i18n="reference_tool">
+              参考方法工具
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!--数字基础能力-->
+      <article class="card">
+        <div class="card-header">
+          <h2 class="card-title" data-i18n="digital_basic_ability">数字基础能力</h2>
+          <span class="card-badge" data-i18n="key_to_online_learning">进入在线学习的钥匙</span>
+        </div>
+        <div class="card-body">
+          <div class="img-slot">
+            <img src="images/img/b4.jpg" alt="img-slot">
+          </div>
+          <p class="desc" data-i18n="digital_basic_ability_desc">
+            BBC Webwise 帮你掌握最必要的数字技能，基础设备操作、搜索与整理信息、使用在线学习资源、以及如何有好的礼貌的使用互联网。
+          </p>
+          <div class="actions">
+            <a class="btn primary" href="https://www.bbc.co.uk/programmes/p023xv3k" target="_blank" rel="noopener noreferrer" data-i18n="reference_external_tutorial">
+              去外部教程网站
+            </a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <div class="note" role="note" aria-label="免责声明">
+      <strong data-i18n="disclaimer">说明与提示：<br></strong>
+      <span data-i18n="disclaimer_desc">本页面提供的是教育与学习支持相关信息，旨在帮助学习者建立基础能力与学习节律。<br>
+      本站外部链接自行跳转第三方公认网站，请自行判断其适用性与安全性。</span>
+    </div>
+  </main>
+  <script src="/assets/i18n.js"></script>
+</body>
+
+</html>

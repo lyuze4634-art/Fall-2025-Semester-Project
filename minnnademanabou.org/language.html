@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>选择语言</title>
+  <style>
+    body{font-family:system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin:24px;}
+    .card{max-width:520px; margin:0 auto; border:1px solid #ddd; border-radius:12px; padding:18px;}
+    button{width:100%; padding:12px 14px; margin:8px 0; border-radius:10px; border:1px solid #ccc; background:#fff; cursor:pointer;}
+    button:hover{background:#f6f6f6;}
+    .muted{color:#666; font-size:14px;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>选择语言</h1>
+    <p class="muted">选择后会回到主页，并在全站保持该语言。</p>
+
+    <button onclick="setLangAndGo('ZH')">中文（简体）</button>
+    <button onclick="setLangAndGo('EN')">English</button>
+    <button onclick="setLangAndGo('JA')">日本語</button>
+    <button onclick="setLangAndGo('KO')">한국어</button>
+    <button onclick="setLangAndGo('DE')">Deutsch</button>
+    <button onclick="setLangAndGo('FR')">Français</button>
+    <button onclick="setLangAndGo('RU')">Русский</button>
+    <button onclick="setLangAndGo('HI')">हिंदी</button>
+
+    <p class="muted"></p>
+  </div>
+
+  <script>
+    function setLangAndGo(lang){
+      localStorage.setItem("site_lang", lang);
+      // 回到主页
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

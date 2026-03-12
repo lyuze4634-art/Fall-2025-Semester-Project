@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>My Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: Arial, "Noto Sans SC", sans-serif;
+      background: #f4f6fb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .box {
+      width: 380px;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #4f46e5;
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .switch {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #555;
+      cursor: pointer;
+    }
+    .msg {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .profile {
+      display: none;
+      text-align: center;
+    }
+    .name {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    .back-home {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="box">
+
+  <div id="auth">
+    <h1 id="title">Login</h1>
+
+    <input id="username" placeholder="U name">
+    <input id="password" type="password" placeholder="password">
+
+    <button onclick="submitForm()">GO!</button>
+
+    <div class="switch" onclick="switchMode()">Register</div>
+    <div id="msg" class="msg"></div>
+  </div>
+
+  <div id="profile" class="profile">
+    <h1>MyPage</h1>
+    <div class="name" id="displayName"></div>
+    <button onclick="logout()">logout</button>
+  </div>
+
+</div>
+
+<a class="back-home" href="index.html">GoBack</a>
+
+
+<script src="/assets/i18n.js"></script>
+<script>
+  
+  let mode = "login";
+
+  function switchMode() {
+    mode = mode === "login" ? "register" : "login";
+    document.getElementById("title").innerText = mode === "login" ? "Login" : "Register";
+    document.querySelector(".switch").innerText =
+      mode === "login" ? "Register" : "Login";
+    document.getElementById("msg").innerText = "";
+  }
+
+  async function submitForm() {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+
+    const res = await fetch(`/api/${mode}.php`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ username, password })
+    });
+
+    const data = await res.json();
+    document.getElementById("msg").innerText = data.message || "";
+
+    if (data.ok) loadProfile();
+  }
+
+  async function loadProfile() {
+    const res = await fetch("/api/me.php", { credentials: "include" });
+    const data = await res.json();
+
+    if (data.ok) {
+      document.getElementById("auth").style.display = "none";
+      document.getElementById("profile").style.display = "block";
+      document.getElementById("displayName").innerText = data.username;
+    }
+  }
+
+  async function logout() {
+    await fetch("/api/logout.php", { method: "POST", credentials: "include" });
+    location.reload();
+  }
+
+  loadProfile();
+</script>
+
+</body>
+</html>

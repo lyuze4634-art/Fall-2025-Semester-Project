@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root{
+      --bg:#f9fafb;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --shadow: 0 10px 30px rgba(17,24,39,.08);
+      --shadow2: 0 8px 20px rgba(17,24,39,.06);
+      --radius: 18px;
+      --accent:#2563eb;
+      --accent2:#0ea5e9;
+      --warn:#f59e0b;
+      --danger:#ef4444;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Segoe UI","Noto Sans SC","Noto Sans JP",system-ui,-apple-system,Arial,sans-serif;
+      background: radial-gradient(900px 400px at 20% 10%, rgba(37,99,235,.10), transparent 60%),
+                  radial-gradient(800px 360px at 85% 20%, rgba(14,165,233,.10), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    /* top bar */
+    .topbar{
+      position: sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter: blur(10px);
+      background: rgba(249,250,251,.75);
+      border-bottom: 1px solid rgba(229,231,235,.8);
+    }
+    .topbar-inner{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 16px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .back-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      text-decoration:none;
+      box-shadow: var(--shadow2);
+      transition: transform .15s ease, box-shadow .15s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .back-btn:hover{
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+    .back-icon{
+      width: 18px;
+      height: 18px;
+      display:inline-block;
+    }
+    .brand{
+      display:flex;
+      flex-direction:column;
+      line-height:1.1;
+      padding-left:4px;
+    }
+    .brand .small{
+      font-size:.82rem;
+      color:var(--muted);
+    }
+    .brand .title{
+      font-size:1rem;
+      font-weight:700;
+      letter-spacing:.2px;
+    }
+
+    /* layout */
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 26px 16px 60px;
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:16px;
+      align-items:stretch;
+      margin-top: 6px;
+    }
+    @media (max-width: 960px){
+      .hero{grid-template-columns:1fr}
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+    }
+    .hero-left{
+      padding: 22px 22px 18px;
+      position:relative;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(37,99,235,.18);
+      background: rgba(37,99,235,.08);
+      color: #1d4ed8;
+      font-weight:600;
+      font-size:.86rem;
+    }
+    h1{
+      margin: 14px 0 8px;
+      font-size: 1.9rem;
+      letter-spacing: .2px;
+    }
+    .subtitle{
+      margin:0;
+      color: var(--muted);
+      line-height:1.7;
+      font-size: 1.02rem;
+    }
+    .hero-points{
+      margin-top: 14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .pill{
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #fff;
+      font-size:.92rem;
+      color: #374151;
+    }
+
+    .hero-right{
+      padding: 18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .placeholder{
+      border: 1.5px dashed rgba(107,114,128,.55);
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(249,250,251,.7), rgba(255,255,255,.9));
+      min-height: 180px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding: 14px;
+      text-align:center;
+      color: var(--muted);
+    }
+    .placeholder strong{color:#374151}
+    .mini-note{
+      font-size:.88rem;
+      line-height:1.6;
+      margin:0;
+    }
+    .cta-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      appearance:none;
+      border: 1px solid var(--border);
+      background:#fff;
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      box-shadow: var(--shadow2);
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-weight:600;
+      font-size:.95rem;
+    }
+    .btn:hover{transform: translateY(-1px); box-shadow: var(--shadow);}
+    .btn.primary{
+      border-color: rgba(37,99,235,.35);
+      background: linear-gradient(180deg, rgba(37,99,235,.12), rgba(37,99,235,.06));
+      color:#1d4ed8;
+    }
+
+    .grid{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 960px){
+      .grid{grid-template-columns:1fr}
+    }
+    .section{
+      padding: 18px 18px 16px;
+    }
+    .section h2{
+      margin: 4px 0 10px;
+      font-size: 1.2rem;
+      letter-spacing:.2px;
+    }
+    .section p{
+      margin: 0 0 10px;
+      color:#374151;
+      line-height: 1.85;
+    }
+    .muted{
+      color: var(--muted);
+    }
+    .list{
+      margin: 8px 0 0;
+      padding-left: 18px;
+      color:#374151;
+      line-height: 1.85;
+    }
+    .list li{margin:6px 0}
+    .divider{
+      height:1px;
+      background: var(--border);
+      margin: 12px 0;
+    }
+
+    .callout{
+      margin-top:16px;
+      padding: 16px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(245,158,11,.25);
+      background: rgba(245,158,11,.10);
+      color:#78350f;
+      line-height:1.75;
+    }
+    .callout strong{color:#7c2d12}
+    .callout a{color:#7c2d12; text-decoration:underline}
+
+    footer{
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(239,68,68,.18);
+      background: rgba(239,68,68,.06);
+      color:#7f1d1d;
+      line-height:1.75;
+    }
+    footer h3{
+      margin:0 0 8px;
+      font-size: 1.05rem;
+      letter-spacing:.2px;
+    }
+    footer ul{
+      margin: 8px 0 0;
+      padding-left: 18px;
+    }
+    footer li{margin: 6px 0}
+    .fine{
+      margin-top:10px;
+      font-size: .9rem;
+      color: rgba(127,29,29,.9);
+    }
+
+    .kicker{
+      font-size:.92rem;
+      color: var(--muted);
+      margin: 0 0 8px;
+    }
+    .quote{
+      margin: 10px 0 0;
+      padding: 12px 14px;
+      border-left: 4px solid rgba(37,99,235,.45);
+      background: rgba(37,99,235,.06);
+      border-radius: 12px;
+      color:#1f2937;
+      line-height:1.85;
+    }
+    .img-slot{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius:12px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="back-btn" href="index.html" aria-label="返回主页" data-i18n="back_to_home">
+        <svg class="back-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        返回主页
+      </a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="card hero-left">
+        <span class="badge" data-i18n="badge">恢复学习能力！稳定情绪！提高自我效能</span>
+        <h1 data-i18n="hero_title">当你“学不下去”时，这不是你的错</h1>
+        <p class="subtitle" data-i18n="hero_subtitle">
+          在长期压力、迁移、冲突、贫困或突发事件之后，人的注意力、记忆力、动力与情绪调节能力都可能受到影响。
+          学习困难常常是“大脑过载”的信号，而不是“你不够努力”的证据。
+          这一页提供一些简单、低风险、可自助尝试的方法，帮助你先恢复稳定，然后再慢慢回到学习。
+        </p>
+        <div class="hero-points">
+          <span class="pill" data-i18n="pill_1">先稳定，再学习</span>
+          <span class="pill" data-i18n="pill_2">小步前进，不追求完美</span>
+          <span class="pill" data-i18n="pill_3">允许自己“慢一点”</span>
+          <span class="pill" data-i18n="pill_4">需要时寻求支持</span>
+        </div>
+        <div class="quote" data-i18n="quote">
+          你现在的状态，可能是在“保护自己”。当身体与大脑感觉不安全时，它会优先处理生存与情绪，而不是知识输入。
+          这是一种常见、可以理解的反应，请不要责怪自己。
+        </div>
+      </div>
+
+      <div class="card hero-right">
+        <div class="placeholder">
+            <img src="images/img/s1.jpg" class="img-slot">
+        </div>
+        <p class="mini-note muted" data-i18n="hero_note">
+          WHO提供的是全球通用、循证基础的心理健康与精神卫生信息，重点在于“什么是心理健康问题”“如何理解”“基本应对原则是什么”。如果你想先“搞清楚发生了什么、这正不正常”，WHO 是一个可靠的起点。<br>
+          MHPSS强调的不只是个体心理状态，还包括社会、环境、教育与支持系统。如果你的困难和环境、教育中断、社会压力密切相关，UNHCR 的 MHPSS 视角会非常有帮助。
+        </p>
+        <div class="cta-row">
+          <a class="btn primary" href="https://www.who.int/teams/mental-health-and-substance-use" target="_blank" rel="noopener" data-i18n="button_who">
+            心理健康信息（WHO）
+          </a>
+          <a class="btn primary" href="https://www.unhcr.org/" target="_blank" rel="noopener" data-i18n="button_unhcr">
+            MHPSS 资源（UNHCR）
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card section">
+        <p class="kicker" data-i18n="section_1_kicker">重回状态！</p>
+        <h2 data-i18n="section_1_title">学不下去时怎么办：把目标从“学会”改成“回到可学习状态”</h2>
+        <p data-i18n="section_1_desc">
+          许多人在困难时期会出现：一打开书就烦躁、坐不住、脑子空白、反复刷手机、甚至想哭。<br>
+          这种时候继续强迫自己，很可能只会增加挫败感。<br>
+          更有效的做法是：先把神经系统从“紧绷/警觉”带回到“相对安全/可专注”的区间。<br>
+        </p>
+        <div class="divider"></div>
+        <p data-i18n="section_1_actions"><strong>可以立刻做的 4 件小事：</strong></p>
+        <ul class="list">
+          <li data-i18n="section_1_action_1"><strong>30 秒呼吸：</strong>缓慢吸气 4 秒、停 1 秒、呼气 6 秒，重复 5 次，可以有效的临时减少压力。</li>
+          <li data-i18n="section_1_action_2"><strong>观察周围：</strong>说出三个看到的东西、三个摸到的、三个听到的、三个你闻到的，可以迅速冷静下来，很多运动员经常用这个方法。</li>
+          <li data-i18n="section_1_action_3"><strong>把任务缩到极小：</strong>不是学一会，而是只读标题，或者随便找几个关键词，可以有效地把你的注意力拉回书中。</li>
+          <li data-i18n="section_1_action_4"><strong>身体先动一下：</strong>身体的改变会反过来影响情绪与注意力，可以出门走走，学习是循序渐进的，要学会劳逸结合。</li>
+        </ul>
+        <p class="muted" data-i18n="section_1_final">
+          我们的目标不是立刻恢复高效率，而是让大脑收到一个信息：我在一点点掌控局面，我可以开始了，要控制情绪，不要被情绪控制！
+        </p>
+      </article>
+
+      <article class="card section">
+        <p class="kicker" data-i18n="section_2_kicker">重回教育！</p>
+        <h2 data-i18n="section_2_title">长期中断学习后往往不愿意回到学习中去</h2>
+        <p data-i18n="section_2_desc">
+          中断越久，重新开始时越可能出现心理阻力。这是因为学习不仅是知识问题，还涉及身份、尊严、人与人的对比与过去的经历。<br>
+          如果经历过被否定、被排斥、被嘲笑或失败的体验，大脑会把“学习情境”与“危险，羞耻，无力感”联系在一起。
+        </p>
+        <div class="divider"></div>
+        <p data-i18n="section_2_common_reactions"><strong>一些常见反应包括：</strong></p>
+        <ul class="list">
+          <li data-i18n="section_2_reaction_1">害怕开始：担心一开始就自认为“我不行”。</li>
+          <li data-i18n="section_2_reaction_2">注意力涣散：越想专注越做不到，甚至出现逃避。</li>
+          <li data-i18n="section_2_reaction_3">强烈比较：总觉得别人更快、更聪明，而自己落后太多。</li>
+          <li data-i18n="section_2_reaction_4">过度完美：觉得必须“从第一天就做到最好”，否则就不开始。</li>
+        </ul>
+        <p class="muted" data-i18n="section_2_final">
+          如果你有这些反应，不代表你“懒”或“没用”，而是你在适应并尝试保护自己。
+        </p>
+      </article>
+
+      <article class="card section">
+        <p class="kicker" data-i18n="section_3_kicker">踹飞焦虑！</p>
+        <h2 data-i18n="section_3_title">焦虑、挫败、自我否定的正常化：你并不孤单</h2>
+        <p data-i18n="section_3_desc">
+          “我学不进去”“我肯定学不会”“我太差了”这些想法在高压环境下非常常见。<br>
+          重要的是把“想法”与“事实”分开，想法是大脑在解释世界的一种方式，尤其在疲惫时，它更容易选择悲观解释，但这往往并不是真实的。
+        </p>
+        <div class="divider"></div>
+        <p data-i18n="section_3_rewrite"><strong>把自我否定改写成更真实的话！</strong></p>
+        <ul class="list">
+          <li data-i18n="section_3_rewrite_1">把“我就是不行”改成“我现在很难，但这不等于我永远做不到”。</li>
+          <li data-i18n="section_3_rewrite_2">把“我落后太多了”改成“我正在从中断中恢复，速度慢一点是合理的”。</li>
+          <li data-i18n="section_3_rewrite_3">把“我必须一次成功”改成“我可以允许自己试错，学习本来就需要重复”。</li>
+        </ul>
+        <p class="muted" data-i18n="section_3_final">
+          你不需要立刻相信这些改写，只要在大脑里留下一个更温和、可行的选项即可，相信的力量会慢慢改变的思考方式。
+        </p>
+      </article>
+
+      <article class="card section">
+        <p class="kicker" data-i18n="section_4_kicker">重回巅峰！</p>
+        <h2 data-i18n="section_4_title">把“情绪”当作学习的一部分</h2>
+        <p data-i18n="section_4_desc">
+          学习不是只发生在书本上，也发生在你与自己相处的方式里。<br>
+          当悲观的情绪上来时，你可以先做“调节”，再做“输入”。
+        </p>
+        <div class="divider"></div>
+        <ul class="list">
+          <li data-i18n="section_4_action_1"><strong>用计时器减少恐惧：</strong>设定 十分钟学习 + 五分钟休息。十分钟结束就允许停下。</li>
+          <li data-i18n="section_4_action_2"><strong>把学习变成可见的小成果：</strong>写下今天完成的一件小事（哪怕只是打开网页或记了 3 个词）。</li>
+          <li data-i18n="section_4_action_3"><strong>建立“安全角”：</strong>固定一个位置学习，准备水、纸、耳塞等小玩意，创造令自己安心的环境。</li>
+          <li data-i18n="section_4_action_4"><strong>情绪命名：</strong>对自己说“我现在是紧张/害怕/烦躁”，命名能降低强度。</li>
+          <li data-i18n="section_4_action_5"><strong>向外求助：</strong>呼叫你的好哥们，好闺蜜陪你学 15 分钟，你不是孤单一人。</li>
+        </ul>
+        <p class="muted" data-i18n="section_4_final">
+          如果你愿意，可以把“调节”写进学习计划：它不是浪费时间，而是让学习重新发生的前提。
+        </p>
+      </article>
+    </section>
+
+    <div class="callout card" data-i18n="callout_final">
+      <strong>如果你现在非常痛苦：<br></strong>
+      你不需要先“变坚强”才配得到帮助。若你出现持续失眠、极度焦虑、频繁惊恐、无法进行日常生活，
+      或者有伤害自己/他人的想法，请优先联系你所在地的紧急服务、心理健康热线、医院、学校辅导中心、
+      社区组织或可信赖的专业机构。若你处于紧急危险中，请立即联系当地的紧急电话号码。
+    </div>
+
+    <footer>
+      <h3 data-i18n="footer_title">免责声明</h3>
+      <ul>
+        <li data-i18n="footer_point_1">本页面内容仅用于教育与自助支持，不能替代医生、心理治疗师或其他专业人员的诊断与治疗建议。</li>
+        <li data-i18n="footer_point_2">请根据你所在地的资源，联系当地机构获取帮助。</li>
+        <li data-i18n="footer_point_3">如果你正处于紧急危险、请立即联系当地紧急服务。</li>
+        <li data-i18n="footer_point_4">你可以将本页面链接分享给朋友或学习伙伴，但请避免在公开场合暴露个人敏感信息。</li>
+      </ul>
+    </footer>
+    <div>
+  </div>
+<script src="/assets/i18n.js"></script>
+</body>
+
+
+</html>

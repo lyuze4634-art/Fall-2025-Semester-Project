@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title data-i18n="t_edu_path_title">教育路径与替代学习方式</title>
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --shadow: 0 8px 24px rgba(0,0,0,.06);
+      --radius:18px;
+      --accent:#2563eb;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans SC", "Hiragino Sans", "Helvetica Neue", Arial, sans-serif;
+      color:var(--text);
+      background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
+      min-height:100vh;
+    }
+
+    /* Top bar */
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter: blur(10px);
+      background: rgba(246,247,251,.78);
+      border-bottom:1px solid rgba(229,231,235,.7);
+    }
+    .topbar-inner{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 16px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .back-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius: 999px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--text);
+      text-decoration:none;
+      box-shadow: 0 4px 14px rgba(0,0,0,.06);
+      transition: transform .08s ease, box-shadow .12s ease, border-color .12s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .back-btn:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(0,0,0,.08);
+      border-color:#d1d5db;
+    }
+    .back-icon{
+      width:18px;height:18px;display:inline-block;
+    }
+    .crumb{
+      color:var(--muted);
+      font-size: 0.95rem;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .wrap{
+      max-width:1100px;
+      margin: 0 auto;
+      padding: 22px 16px 44px;
+    }
+    header{
+      margin-top: 8px;
+      padding: 22px 18px;
+      background: radial-gradient(1200px 300px at 20% 0%, rgba(37,99,235,.12), transparent 65%),
+                  radial-gradient(900px 260px at 80% 0%, rgba(16,185,129,.10), transparent 60%),
+                  #ffffff;
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    h1{
+      margin:0;
+      font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+      letter-spacing: .2px;
+    }
+    .subtitle{
+      margin:10px 0 0;
+      color:var(--muted);
+      line-height:1.7;
+      font-size: 1rem;
+      max-width: 70ch;
+    }
+
+    .grid{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .card{
+      grid-column: span 12;
+      background: var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    @media (min-width: 880px){
+      .card.half{grid-column: span 6;}
+    }
+
+    .card-title{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+    .card-title h2{
+      margin:0;
+      font-size: 1.25rem;
+    }
+    .tag{
+      flex:0 0 auto;
+      font-size:.85rem;
+      color: #1d4ed8;
+      background: rgba(37,99,235,.10);
+      border:1px solid rgba(37,99,235,.18);
+      padding: 6px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .content{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 880px){
+      .content{
+        grid-template-columns: 1.2fr .8fr;
+        align-items:start;
+      }
+    }
+
+    .text p{
+      margin: 0 0 10px;
+      color: var(--text);
+      line-height: 1.8;
+    }
+    .text ul{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--text);
+      line-height: 1.85;
+    }
+    .text li{ margin: 6px 0; }
+    .hint{
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .img-slot{
+      border: 1px dashed #cbd5e1;
+      border-radius: 16px;
+      background:
+        linear-gradient(135deg, rgba(148,163,184,.20), rgba(148,163,184,.06));
+      min-height: 210px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding: 14px;
+      text-align:center;
+      overflow: hidden; 
+    }
+    .img-slot strong{
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+    .img-slot small{
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .note{
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.85);
+      color: var(--muted);
+      line-height: 1.8;
+      box-shadow: 0 10px 24px rgba(0,0,0,.05);
+    }
+
+    .callout{
+      margin-top: 12px;
+      border-left: 4px solid var(--accent);
+      padding: 10px 12px;
+      background: rgba(37,99,235,.06);
+      border-radius: 12px;
+      color: #111827;
+    }
+    .callout b{ color:#0f172a; }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="back-btn" href="index.html" aria-label="返回主页">
+        <svg class="back-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span data-i18n="back_to_home">返回主页</span>
+      </a>
+      <div class="crumb" data-i18n="breadcrumb">教育路径与替代学习方式</div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <header>
+      <h1 data-i18n="edu_path_title">教育路径与替代学习方式</h1>
+      <p class="subtitle" data-i18n="edu_path_subtitle">
+        当正规教育缺失或暂时无法进入时，仍然可以通过多种方式持续学习、积累能力与证据。<br>
+        你可以从小步开始，逐步形成稳定的学习路径与过渡计划。
+      </p>
+    </header>
+
+    <section class="grid">
+      <!--非正规教育-->
+      <article class="card half">
+        <div class="card-title">
+          <h2 data-i18n="informal_education_title">非正规教育</h2>
+          <span class="tag" data-i18n="informal_education_tag">方式 1</span>
+        </div>
+
+        <div class="content">
+          <div class="text">
+            <p data-i18n="informal_education_desc">
+              非正规教育指<strong>不以传统学位为核心</strong>的学习形式，例如社区课程、公益机构培训、职业技能班、兴趣社群学习等。
+              优点是进入门槛低、可快速获得支持与结构；缺点是质量参差，需要筛选。
+            </p>
+            <ul>
+              <li data-i18n="informal_education_point1"><strong>从“目标”倒推</strong>：你想提升的是语言、计算机、职业技能，还是考试能力？先选一个方向再努力吧！</li>
+              <li data-i18n="informal_education_point2"><strong>优先选择有产出的课程</strong>：能做作品、能拿到结业证明、能得到导师反馈的课程往往更有价值。</li>
+              <li data-i18n="informal_education_point3"><strong>建立证据</strong>：保留作业、作品、证书、活动记录，未来求职或升学可用。</li>
+            </ul>
+            <p class="hint" data-i18n="informal_education_hint">如果所在地区有图书馆、社区中心，通常是性价比很高的入口。</p>
+          </div>
+
+          <div class="img-slot" id="img-nonformal">
+            <img src="images/img/f1.jpg" alt="img-slot">
+          </div>
+        </div>
+      </article>
+
+      <!--在线与开放学习资源-->
+      <article class="card half">
+        <div class="card-title">
+          <h2 data-i18n="online_resources_title">在线与开放学习资源</h2>
+          <span class="tag" data-i18n="online_resources_tag">方式 2</span>
+        </div>
+
+        <div class="content">
+          <div class="text">
+            <p data-i18n="online_resources_desc">
+              在线学习可以绕过地理与时间限制，适合在资源不足时建立基础能力。
+              关键是在于把资源变成<strong>可完成的任务</strong>，并定期复盘。
+            </p>
+            <ul>
+              <li data-i18n="online_resources_point1"><strong>选资源的标准</strong>：清晰大纲、可练习、可测验、有示例与答案解析。</li>
+              <li data-i18n="online_resources_point2"><strong>避免“收藏式学习”</strong>：一次只跟一个课程或系列，完成一个小单元再换。</li>
+              <li data-i18n="online_resources_point3"><strong>用输出巩固</strong>：做笔记、写总结、做小作品、讲给别人听。</li>
+            </ul>
+            <p class="hint" data-i18n="online_resources_hint">可以把“每周学习计划”写成清单，完成后打勾，会显著提升坚持度！</p>
+          </div>
+
+          <div class="img-slot" id="img-online">
+            <img src="images/img/f2.jpg" alt="img-slot">
+          </div>
+        </div>
+      </article>
+
+      <!--过渡教育-->
+      <article class="card half">
+        <div class="card-title">
+          <h2 data-i18n="bridge_education_title">过渡性教育</h2>
+          <span class="tag" data-i18n="bridge_education_tag">方式 3</span>
+        </div>
+
+        <div class="content">
+          <div class="text">
+            <p data-i18n="bridge_education_desc">
+              过渡性教育的目标是<strong>把从“无法进入正规教育”过渡到“具备进入条件”<br></strong>。
+              例如补足基础学力、适应学习节律、完成所需材料。
+            </p>
+            <ul>
+              <li data-i18n="bridge_education_point1"><strong>补缺口</strong>：识别你进入下一阶段所需的条件（语言、证书、学力、作品集等）。</li>
+              <li data-i18n="bridge_education_point2"><strong>练节律</strong>：从每次 20–30 分钟开始，逐步拉长到稳定学习时段。</li>
+              <li data-i18n="bridge_education_point3"><strong>提前准备材料</strong>：简历、学习记录、作品链接、推荐人等，边学边整理。</li>
+            </ul>
+            <p class="hint" data-i18n="bridge_education_hint">提示：过渡期常见“心态波动”，属于正常反应。重点是保持小步可持续。</p>
+          </div>
+
+          <div class="img-slot" id="img-bridge">
+            <img src="images/img/f3.jpg" alt="img-slot">
+          </div>
+        </div>
+      </article>
+
+      <!--自主学习路径设计-->
+      <article class="card half">
+        <div class="card-title">
+          <h2 data-i18n="self_learning_path_title">自主学习路径设计</h2>
+          <span class="tag" data-i18n="self_learning_path_tag">方式 4</span>
+        </div>
+
+        <div class="content">
+          <div class="text">
+            <p data-i18n="self_learning_path_desc">
+              自主学习不是“全靠意志力”，而是把学习拆成能执行的系统：目标、资源、任务、反馈与复盘。
+              你可以用下面的结构设计自己的路径。
+            </p>
+            <ul>
+              <li data-i18n="self_learning_path_point1"><strong>1）确定方向</strong>：用一句话写下“我想在三个月内提升什么”。</li>
+              <li data-i18n="self_learning_path_point2"><strong>2）拆成周目标</strong>：每周几个可量化成果，例如完成章节，做出作品，通过测验。</li>
+              <li data-i18n="self_learning_path_point3"><strong>3）安排低门槛启动</strong>：每天最少五到十分钟，用来“不断链”。</li>
+              <li data-i18n="self_learning_path_point4"><strong>4）建立反馈</strong>：测验、作业对照、找同伴互评，或请导师给建议。</li>
+              <li data-i18n="self_learning_path_point5"><strong>5）月度复盘</strong>：保留“完成证据”，调整下一月的资源与节奏。</li>
+            </ul>
+            <p class="hint" data-i18n="self_learning_path_hint">如果需要展示学习成果，作品集或学习日志会非常有帮助。</p>
+          </div>
+
+          <div class="img-slot" id="img-selfpath">
+            <img src="images/img/f4.jpg" alt="img-slot">
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <div class="note">
+      <strong data-i18n="disclaimer_title">免责声明：<br></strong>
+      <span data-i18n="disclaimer_desc">本页面仅提供教育与学习相关的一般信息。<br>
+      若你需要资格认证、入学申请请联系你所在地区的专业机构。</span>
+    </div>
+  </div>
+<script src="/assets/i18n.js"></script>
+</body>
+</html>

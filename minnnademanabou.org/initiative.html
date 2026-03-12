@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title data-i18n="t_edu_rights_title">教育权利与学习倡议</title>
+  <style>
+    :root{
+      --bg:#f6f8fb;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --brand:#2563eb;
+      --brand2:#0ea5e9;
+      --warn:#b45309;
+      --shadow: 0 10px 30px rgba(17,24,39,.08);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Noto Sans SC", "Hiragino Sans", "Microsoft YaHei", Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(37,99,235,.15), transparent 60%),
+                  radial-gradient(900px 500px at 95% 0%, rgba(14,165,233,.15), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+      background: rgba(246,248,251,.75);
+      border-bottom: 1px solid rgba(229,231,235,.8);
+    }
+    .topbar-inner{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 12px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .back-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--text);
+      text-decoration:none;
+      box-shadow: 0 6px 18px rgba(17,24,39,.06);
+      transition: transform .08s ease, box-shadow .15s ease, border-color .15s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .back-btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(37,99,235,.35);
+      box-shadow: 0 10px 24px rgba(17,24,39,.10);
+    }
+    .back-icon{
+      width:18px;height:18px;display:inline-block;
+    }
+    .pill{
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      padding: 6px 10px;
+      border-radius: 999px;
+      white-space:nowrap;
+    }
+
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 22px 16px 56px;
+    }
+
+    header.hero{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 10px;
+    }
+    @media (max-width: 900px){
+      header.hero{grid-template-columns:1fr}
+    }
+
+    .hero-card{
+      background: linear-gradient(135deg, rgba(37,99,235,.10), rgba(14,165,233,.08));
+      border:1px solid rgba(37,99,235,.18);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow:hidden;
+    }
+    .hero-card:before{
+      content:"";
+      position:absolute;
+      inset:-40px -40px auto auto;
+      width:220px;height:220px;
+      background: radial-gradient(circle at 30% 30%, rgba(37,99,235,.25), transparent 60%);
+      transform: rotate(15deg);
+    }
+    .hero-title{
+      margin:0 0 8px;
+      font-size: 28px;
+      letter-spacing: .2px;
+      position:relative;
+    }
+    .hero-sub{
+      margin:0;
+      color: var(--muted);
+      line-height: 1.7;
+      position:relative;
+      font-size: 15px;
+    }
+
+    .quote-card{
+      background: var(--card);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px 18px 16px;
+      box-shadow: var(--shadow);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .quote{
+      margin:0;
+      line-height: 1.7;
+      color: var(--text);
+      font-size: 15px;
+    }
+    .quote strong{
+      color: var(--brand);
+    }
+    .note{
+      margin:0;
+      font-size: 12.5px;
+      color: var(--muted);
+      border-top: 1px dashed var(--line);
+      padding-top: 10px;
+      line-height: 1.6;
+    }
+
+    .grid{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+
+    .card{
+      grid-column: span 6;
+      background: var(--card);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      display:flex;
+      gap: 14px;
+      align-items: flex-start;
+      min-height: 210px;
+    }
+    @media (max-width: 900px){
+      .card{grid-column: span 12}
+    }
+
+    .thumb{
+      width: 96px;
+      height: 96px;
+      border-radius: 16px;
+      border: 1px dashed rgba(107,114,128,.5);
+      background: linear-gradient(135deg, rgba(37,99,235,.08), rgba(14,165,233,.06));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex: 0 0 auto;
+      position:relative;
+      overflow:hidden;
+    }
+    .thumb span{
+      font-size: 12px;
+      color: var(--muted);
+      text-align:center;
+      padding: 0 10px;
+      line-height: 1.3;
+    }
+
+    .content h2{
+      margin: 0 0 8px;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    .content p{
+      margin: 0 0 10px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14.5px;
+    }
+    .content ul{
+      margin: 0;
+      padding-left: 18px;
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 14.5px;
+    }
+    .content li{
+      margin: 6px 0;
+    }
+
+    .callout{
+      grid-column: span 12;
+      background: linear-gradient(135deg, rgba(180,83,9,.10), rgba(245,158,11,.08));
+      border: 1px solid rgba(180,83,9,.22);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+    }
+    .callout h3{
+      margin: 0 0 8px;
+      font-size: 16px;
+      color: #7c2d12;
+    }
+    .callout p{
+      margin: 0;
+      color: #7c2d12;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .resources{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .res-card{
+      grid-column: span 4;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      min-height: 170px;
+    }
+    @media (max-width: 900px){
+      .res-card{grid-column: span 12}
+    }
+    .res-card h4{
+      margin:0 0 8px;
+      font-size: 15px;
+    }
+    .res-card p{
+      margin:0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    .placeholder-links{
+      margin-top: 10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .tag{
+      font-size: 12px;
+      border: 1px dashed var(--line);
+      color: var(--muted);
+      background: rgba(249,250,251,.8);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    footer{
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.7;
+      border-top: 1px solid rgba(229,231,235,.9);
+      padding-top: 16px;
+    }
+
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      background: rgba(17,24,39,.06);
+      border: 1px solid rgba(229,231,235,.9);
+      border-bottom-width: 2px;
+      padding: 1px 6px;
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="back-btn" href="index.html" aria-label="返回主页">
+        <svg class="back-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M14.5 5.5L8 12l6.5 6.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span data-i18n="back_to_home">返回主页</span>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="wrap">
+    <header class="hero">
+      <section class="hero-card">
+        <h1 class="hero-title" data-i18n="edu_rights_title">教育权利与学习倡议</h1>
+        <p class="hero-sub" data-i18n="edu_rights_sub">
+          <strong>这不是你的失败</strong>。在很多情况下，学习的中断与困难来自
+          <strong>受教育权被限制、被忽视或资源不公平</strong>，而不是“你不够努力”或“你不够聪明”。
+        </p>
+      </section>
+
+      <aside class="quote-card">
+        <p class="quote" data-i18n="quote">
+          你不是“落后的人”。你是在一个并不总是公平的环境里，努力继续前进的人。<br/>
+          <strong>被排除，不等于没能力。</strong>
+        </p>
+
+      </aside>
+    </header>
+
+    <main class="grid">
+      <!-- 1 -->
+      <section class="card">
+        <div class="thumb" aria-hidden="true">
+            <img src="images/img/i1.jpg" alt="img-slot">
+        </div>
+        <div class="content">
+          <h2 data-i18n="edu_rights_1">教育应当多样、包容，不该因身份而区别对待</h2>
+          <p data-i18n="edu_rights_1_desc">
+            教育不只是“学校里上课”。它可以是职业训练、社区学习、在线课程、语言支持、补习与陪伴学习。<br>
+            关键在于每个人都应有公平的学习机会。
+          </p>
+          <ul>
+            <li data-i18n="edu_rights_1_point1">不应因国籍、种族、性别、贫富、语言、残障、移民身份而被降低机会。</li>
+            <li data-i18n="edu_rights_1_point2">如果学习资源只对少数人开放，这不是个人问题，而是结构性不公平。</li>
+            <li data-i18n="edu_rights_1_point3">每个人都应该拥有合理的学习支持、安全的学习环境。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="thumb" aria-hidden="true">
+            <img src="images/img/i2.jpg" alt="img-slot">
+        </div>
+        <div class="content">
+          <h2 data-i18n="edu_rights_2">什么是受教育权</h2>
+          <p data-i18n="edu_rights_2_desc">
+            受教育权是一个人有机会学习、发展能力，并在安全中获得必要支持的权利。<br>
+            这包括“能进入教育系统”，也包括“在教育系统中不被排除”。
+          </p>
+          <ul>
+            <li data-i18n="edu_rights_2_point1"><strong>可及性</strong>：距离、费用、材料、证件门槛不应成为不可跨越的墙。</li>
+            <li data-i18n="edu_rights_2_point2"><strong>可接受性</strong>：教育内容与环境应尊重人格，避免歧视与羞辱。</li>
+            <li data-i18n="edu_rights_2_point3"><strong>可适应性</strong>：能照顾语言差异、学习差异、家庭与工作现实。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="thumb" aria-hidden="true">
+            <img src="images/img/i3.jpg" alt="img-slot">
+        </div>
+        <div class="content">
+          <h2 data-i18n="edu_rights_3">谁更容易被排除在教育之外</h2>
+          <p data-i18n="edu_rights_3_desc">
+            “被排除”常常不是一次性的，而是多重因素叠加。例如制度门槛、经济压力、语言障碍、照护责任、创伤经历、歧视与缺乏支持。
+          </p>
+          <ul>
+            <li data-i18n="edu_rights_3_point1">移民与难民、少数语言使用者、无稳定居所的人</li>
+            <li data-i18n="edu_rights_3_point2">低收入家庭、需要工作维持生活的人</li>
+            <li data-i18n="edu_rights_3_point3">需要照顾孩子与家人的人</li>
+            <li data-i18n="edu_rights_3_point4">经历冲突、灾害、家庭暴力、长期病痛或创伤的人</li>
+            <li data-i18n="edu_rights_3_point5">残障人士、学习差异者、在学校中反复被否定的人</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="thumb" aria-hidden="true">
+            <img src="images/img/i4.jpg" alt="img-slot">
+        </div>
+        <div class="content">
+          <h2 data-i18n="edu_rights_4">教育中断并不等于能力不足</h2>
+          <p data-i18n="edu_rights_4_desc">
+            很多人在中断后会误以为“我学不回来了”。但学习能力是可恢复的，当压力下降、资源到位、方法合适，
+            将会重新进步。
+          </p>
+          <ul>
+            <li data-i18n="edu_rights_4_point1">中断可能来自外部原因，例如经济、政策、家庭、签证、战争、歧视、健康等。</li>
+            <li data-i18n="edu_rights_4_point2">“跟不上”常常是缺少支持与练习机会，而非自己本身的问题。</li>
+            <li data-i18n="edu_rights_4_point3">从小目标开始，每天五到十分钟也算重新启动。</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- callout -->
+      <section class="callout">
+        <h3 data-i18n="callout_title">如果你此刻很痛苦：先把“自责”放下</h3>
+        <p data-i18n="callout_desc">
+          你并不需要先证明自己“足够好”才能得到教育与支持。<br>很多制度本就不公平，你要做的不是独自承受，而是一步步把支持找回来。
+        </p>
+      </section>
+    </main>
+
+    <section class="resources">
+      <div class="res-card">
+        <h4 data-i18n="resource_title_1">如何寻找支持与资源</h4>
+        <p data-i18n="resource_desc_1">
+          先找到最靠近你、最容易联系的入口，再逐步转介到更专业的支持。
+        </p>
+        <div class="placeholder-links">
+          <span class="tag" data-i18n="resource_1">① 当地教育局，学校咨询</span>
+          <span class="tag" data-i18n="resource_2">② 社区中心，公益组织</span>
+          <span class="tag" data-i18n="resource_3">③ 图书馆，成人教育</span>
+          <span class="tag" data-i18n="resource_4">④ 法律援助，权益组织</span>
+        </div>
+      </div>
+
+      <div class="res-card">
+        <h4 data-i18n="resource_title_2">详细描述内容</h4>
+        <p data-i18n="resource_desc_2">
+          当联系机构时，尽量说清遇到的障碍是什么、需要什么、希望的结果是什么。
+        </p>
+        <div class="placeholder-links">
+          <span class="tag" data-i18n="resource_5">“我在入学/继续学习上遇到困难”</span>
+          <span class="tag" data-i18n="resource_6">“我需要语言/材料方面的支持”</span>
+          <span class="tag" data-i18n="resource_7">“我希望获得可行的学习路径建议”</span>
+        </div>
+      </div>
+
+      <div class="res-card">
+        <h4 data-i18n="resource_title_3">联系国际机构</h4>
+        <p data-i18n="resource_desc_3">
+          如果当地出于种种原因，可以尝试联系以下国际组织与机构寻求帮助。
+        </p>
+        <div class="placeholder-links">
+          <span class="tag" data-i18n="resource_8">UNESCO</span>
+          <span class="tag" data-i18n="resource_9">UNHCR</span>
+          <span class="tag" data-i18n="resource_10">Save the Children</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div data-i18n="disclaimer"> 
+        <strong>免责声明：</strong>本网页为教育与倡议内容，旨在提供理解与方向，不构成法律意见、医疗建议或心理治疗。
+      </div>
+    </footer>
+  </div>
+<script src="/assets/i18n.js"></script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="t_site_title">みんなで学ぼう</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    font-family: "Segoe UI", "Noto Sans SC", sans-serif;
+    background: #f9fafb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 50px;
+    letter-spacing: 2px;
+  }
+
+  .container {
+    display: grid;
+    grid-template-columns: repeat(2, 150px);
+    grid-gap: 40px;
+  }
+
+  .btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+  }
+
+  .btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  }
+
+  .btn img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+  }
+
+  .btn span {
+    padding: 12px;
+    font-size: 1.1rem;
+    color: #333;
+  }
+
+  .comment-section {
+    width: min(820px, 100%);
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    box-sizing: border-box;
+  }
+
+  .comment-section h2 {
+    margin: 0 0 16px 0;
+    font-size: 1.2rem;
+    color: #222;
+  }
+
+  .comment-form {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+  }
+
+  .comment-form textarea {
+    flex: 1;
+    min-height: 70px;
+    resize: vertical;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 1rem;
+    outline: none;
+  }
+
+  .comment-form button {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 14px;
+    background: #111827;
+    color: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .comment-form button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .comment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .comment-item {
+    border: 1px solid #eef2f7;
+    border-radius: 14px;
+    padding: 12px 14px;
+    background: #fafafa;
+  }
+
+  .comment-name {
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 6px;
+  }
+
+  .comment-content {
+    color: #333;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
+
+  .hint {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-top: 6px;
+  }
+
+  .go-mypage {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background: #007bff;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .go-language {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background: #007bff;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+  }
+</style>
+
+</head>
+<body>
+
+  <h1>みんなで学ぼう</h1>
+
+  <div class="container">
+    <a href="basic.html" class="btn">
+      <img src="images/icon/xx.svg" alt="基礎学習">
+      <span>基礎学習<br>Basic</span>
+    </a>
+
+    <a href="support.html" class="btn">
+      <img src="images/icon/cz.svg" alt="サポート">
+      <span>社会サポート<br>Support</span>
+    </a>
+
+    <a href="future.html" class="btn">
+      <img src="images/icon/gz.svg" alt="教育進路">
+      <span>教育進路<br>Future</span>
+    </a>
+
+    <a href="initiative.html" class="btn">
+      <img src="images/icon/zy.svg" alt="倡议">
+      <span>教育の多様性<br>Initiative</span>
+    </a>
+  </div>
+
+  <div class="comment-section">
+    <h2 data-i18n="t_comment_title">留言区</h2>
+
+    <div class="comment-form">
+      <textarea id="commentInput"
+        maxlength="1000"
+        data-i18n-attr="placeholder"
+        data-i18n-key-attr="t_comment_placeholder"
+        placeholder="写下你的留言（已登录用户可发表评论）"></textarea>
+
+      <button id="submitBtn" >⬆</button>
+    </div>
+
+    <div class="hint" id="hint"></div>
+    <div class="comment-list" id="commentList"></div>
+  </div>
+
+  <a class="go-mypage" href="mypage.html" data-i18n="t_login">进入登录</a>
+  <a class="go-language" href="language.html" data-i18n="t_language">Language</a>
+
+  <script src="/assets/i18n.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const map = {
+        t_site_title: "みんなで学ぼう",
+        t_h1: "みんなで学ぼう",
+        t_btn_basic: "基礎教育",
+        t_btn_support: "社会サポート",
+        t_btn_future: "教育進路",
+        t_btn_rights: "教育の権利",
+        t_comment_title: "留言区",
+        t_comment_placeholder: "写下你的留言（已登录用户可发表评论）",
+        t_submit: "提交",
+        t_login: "进入登录",
+        t_language: "Language"
+      };
+
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const k = el.dataset.i18n;
+        if (map[k]) el.dataset.src = map[k];
+      });
+
+      document.querySelectorAll("[data-i18n-attr]").forEach(el => {
+        const key = el.dataset.i18nKeyAttr || el.dataset.i18nAttr;
+        if (map[key]) el.dataset.srcAttr = map[key];
+      });
+    });
+  </script>
+
+  <script>
+    const API_URL = "api/comments.php";
+    const listEl = document.getElementById("commentList");
+    const inputEl = document.getElementById("commentInput");
+    const btnEl = document.getElementById("submitBtn");
+    const hintEl = document.getElementById("hint");
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, (m) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[m]));
+    }
+
+    async function loadComments() {
+      try {
+        const res = await fetch(API_URL, { method: "GET" });
+        const data = await res.json();
+
+        listEl.innerHTML = "";
+        (data.comments || []).forEach(c => {
+          const item = document.createElement("div");
+          item.className = "comment-item";
+          item.innerHTML = `
+            <div class="comment-name">${escapeHtml(c.name || "")}</div>
+            <div class="comment-content">${escapeHtml(c.content || "")}</div>
+          `;
+          listEl.appendChild(item);
+        });
+
+        if (!data.comments || data.comments.length === 0) {
+          listEl.innerHTML = `<div class="hint">暂无留言，来写第一条吧。</div>`;
+        }
+      } catch (e) {
+        hintEl.textContent = "评论加载失败，接口寄了。";
+      }
+    }
+
+    async function submitComment() {
+      const content = inputEl.value.trim();
+      if (!content) return;
+
+      btnEl.disabled = true;
+      hintEl.textContent = "";
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ content })
+        });
+
+        if (res.status === 401) {
+          window.location.href = "mypage.html";
+          return;
+        }
+
+        if (!res.ok) {
+          hintEl.textContent = "提交失败，请稍后重试。";
+          return;
+        }
+
+        inputEl.value = "";
+        await loadComments();
+      } catch (e) {
+        hintEl.textContent = "提交失败，请检查网络或服务器配置。";
+      } finally {
+        btnEl.disabled = false;
+      }
+    }
+
+    btnEl.addEventListener("click", submitComment);
+    loadComments();
+  </script>
+
+  <footer data-i18n="t_footer">みんなで学ぼう /  by group46</footer>
+</body>
+</html>
